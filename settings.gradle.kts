@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TooGoodToThrow"
+rootProject.name = "Too Good To Throw"
 include(":app")
