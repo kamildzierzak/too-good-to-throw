@@ -1,4 +1,4 @@
-package com.example.toogoodtothrow.data.local
+package com.example.toogoodtothrow.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -10,7 +10,6 @@ data class Product(
     val expirationDate: Long,
     val category: ProductCategory,
     val quantity: String? = null,
-    val isExpired: Boolean = false,
     val isDiscarded: Boolean = false,
     val imageUrl: String? = null
 )

@@ -1,4 +1,4 @@
-package com.example.toogoodtothrow.data.local
+package com.example.toogoodtothrow.data
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -11,6 +11,14 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ProductDao {
 
+    //    I use Flow to observe changes in the data.
+    @Query("SELECT * FROM products ORDER BY expirationDate ASC")
+    fun getAllProducts(): Flow<List<Product>>
+
+    //    Same as above, I use Flow to observe changes in the data.
+    @Query("SELECT * FROM products WHERE id = :productId")
+    fun getProductById(productId: Int): Flow<Product?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(product: Product)
 
@@ -19,12 +27,6 @@ interface ProductDao {
 
     @Delete
     suspend fun deleteProduct(product: Product)
-
-    @Query("SELECT * FROM products ORDER BY expirationDate ASC")
-    fun getAllProducts(): Flow<List<Product>>
-
-    @Query("SELECT * FROM products WHERE id = :productId")
-    suspend fun getProductById(productId: Int): Product?
 
     @Query("DELETE FROM products WHERE isDiscarded = 1")
     suspend fun deleteDiscardedProducts()

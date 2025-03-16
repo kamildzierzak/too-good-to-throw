@@ -1,4 +1,4 @@
-package com.example.toogoodtothrow.data.local
+package com.example.toogoodtothrow.data
 
 enum class ProductCategory {
     FOOD, MEDICINE, COSMETICS

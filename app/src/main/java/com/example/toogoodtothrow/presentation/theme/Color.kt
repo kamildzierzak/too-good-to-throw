@@ -1,4 +1,4 @@
-package com.example.toogoodtothrow.ui.theme
+package com.example.toogoodtothrow.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
