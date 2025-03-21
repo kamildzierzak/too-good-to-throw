@@ -7,9 +7,10 @@ import androidx.room.PrimaryKey
 data class Product(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val expirationDate: Long,
+    val expirationDate: Long, // long because timestamp
     val category: ProductCategory,
-    val quantity: String? = null,
+    val quantity: Int? = null,
+    val isExpired: Boolean = false,
     val isDiscarded: Boolean = false,
     val imageUrl: String? = null
 )

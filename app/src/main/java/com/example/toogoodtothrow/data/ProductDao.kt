@@ -10,12 +10,25 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
+    // Flow to observe changes in the data and automatically update the UI.
 
-    //    I use Flow to observe changes in the data.
+    // GET all products SORTED BY expiration date, closest to expiration first.
     @Query("SELECT * FROM products ORDER BY expirationDate ASC")
     fun getAllProducts(): Flow<List<Product>>
 
-    //    Same as above, I use Flow to observe changes in the data.
+    // GET only non-expired products.
+    @Query("SELECT * FROM products WHERE isExpired = 0 ORDER BY expirationDate ASC")
+    fun getValidProducts(): Flow<List<Product>>
+
+    // GET only expired products.
+    @Query("SELECT * FROM products WHERE isExpired = 1 ORDER BY expirationDate ASC")
+    fun getExpiredProducts(): Flow<List<Product>>
+
+    // GET products by category.
+    @Query("SELECT * FROM products WHERE category = :category ORDER BY expirationDate ASC")
+    fun getProductsByCategory(category: ProductCategory): Flow<List<Product>>
+
+    // Get specific product by ID.
     @Query("SELECT * FROM products WHERE id = :productId")
     fun getProductById(productId: Int): Flow<Product?>
 
@@ -28,6 +41,10 @@ interface ProductDao {
     @Delete
     suspend fun deleteProduct(product: Product)
 
-    @Query("DELETE FROM products WHERE isDiscarded = 1")
-    suspend fun deleteDiscardedProducts()
+    // Mark product as discarded.
+    @Query("UPDATE products SET isDiscarded = 1 WHERE id = :productId")
+    suspend fun discardProduct(productId: Int)
+
+//    @Query("DELETE FROM products WHERE isDiscarded = 1")
+//    suspend fun deleteDiscardedProducts()
 }
