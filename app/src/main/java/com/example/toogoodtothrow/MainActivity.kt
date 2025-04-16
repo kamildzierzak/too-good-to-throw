@@ -3,17 +3,24 @@ package com.example.toogoodtothrow
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.toogoodtothrow.presentation.MainNavGraph
-import com.example.toogoodtothrow.presentation.theme.TooGoodToThrowTheme
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             TooGoodToThrowTheme {
-                MainNavGraph()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    TooGoodToThrowApp()
+                }
             }
         }
     }

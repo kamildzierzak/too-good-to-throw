@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Too Good To Throw</string>
+    <string name="back_button">Cofnij</string>
+    <string name="add_product_title">Dodaj produkt</string>
 </resources>

@@ -3,14 +3,15 @@ package com.example.toogoodtothrow.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "products")
+@Entity(tableName = "product")
 data class Product(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
-    val expirationDate: Long, // long because timestamp
+    val expirationDate: Long,
     val category: ProductCategory,
     val quantity: Int? = null,
+    val unit: String? = null,
     val isExpired: Boolean = false,
     val isDiscarded: Boolean = false,
-    val imageUrl: String? = null
+    val imageUri: String? = null,
 )

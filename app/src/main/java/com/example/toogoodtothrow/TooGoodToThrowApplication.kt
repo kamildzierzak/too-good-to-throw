@@ -1,7 +1,18 @@
 package com.example.toogoodtothrow
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.example.toogoodtothrow.data.AppContainer
+import com.example.toogoodtothrow.data.AppDataContainer
 
-@HiltAndroidApp
-class TooGoodToThrowApplication : Application()
+class TooGoodToThrowApplication : Application() {
+
+    /**
+     * AppContainer instance used by the rest of classes to obtain dependencies
+     */
+    lateinit var container: AppContainer
+
+    override fun onCreate() {
+        super.onCreate()
+        container = AppDataContainer(this)
+    }
+}

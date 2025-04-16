@@ -12,27 +12,19 @@ import kotlinx.coroutines.flow.Flow
 interface ProductDao {
     // Flow to observe changes in the data and automatically update the UI.
 
-    // GET all products SORTED BY expiration date, closest to expiration first.
-    @Query("SELECT * FROM products ORDER BY expirationDate ASC")
+    @Query("SELECT * FROM product ORDER BY expirationDate ASC")
     fun getAllProducts(): Flow<List<Product>>
 
-    // GET only non-expired products.
-    @Query("SELECT * FROM products WHERE isExpired = 0 ORDER BY expirationDate ASC")
-    fun getValidProducts(): Flow<List<Product>>
+    @Query("SELECT * FROM product WHERE id = :id")
+    fun getProductById(id: Int): Flow<Product>
 
-    // GET only expired products.
-    @Query("SELECT * FROM products WHERE isExpired = 1 ORDER BY expirationDate ASC")
-    fun getExpiredProducts(): Flow<List<Product>>
-
-    // GET products by category.
-    @Query("SELECT * FROM products WHERE category = :category ORDER BY expirationDate ASC")
+    @Query("SELECT * FROM product WHERE category = :category ORDER BY expirationDate ASC")
     fun getProductsByCategory(category: ProductCategory): Flow<List<Product>>
 
-    // Get specific product by ID.
-    @Query("SELECT * FROM products WHERE id = :productId")
-    fun getProductById(productId: Int): Flow<Product?>
+    @Query("SELECT * FROM product WHERE isExpired = :isExpired ORDER BY expirationDate ASC")
+    fun getProductsByExpiredStatus(isExpired: Boolean): Flow<List<Product>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertProduct(product: Product)
 
     @Update
@@ -41,10 +33,6 @@ interface ProductDao {
     @Delete
     suspend fun deleteProduct(product: Product)
 
-    // Mark product as discarded.
-    @Query("UPDATE products SET isDiscarded = 1 WHERE id = :productId")
-    suspend fun discardProduct(productId: Int)
-
-//    @Query("DELETE FROM products WHERE isDiscarded = 1")
-//    suspend fun deleteDiscardedProducts()
+    @Query("DELETE FROM product")
+    suspend fun deleteAll()
 }
