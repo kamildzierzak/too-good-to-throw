@@ -14,6 +14,8 @@ interface IProductsRepository {
 
     suspend fun insertProduct(product: Product)
 
+    suspend fun insertAllProducts(products: List<Product>)
+
     suspend fun updateProduct(product: Product)
 
     suspend fun deleteProduct(product: Product)

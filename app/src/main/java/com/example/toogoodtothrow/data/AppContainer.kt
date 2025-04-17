@@ -12,7 +12,7 @@ interface AppContainer {
 /**
  * [AppContainer] implementation that provides instance of [OfflineProductsRepository]
  */
-class AppDataContainer(private val context: Context): AppContainer {
+class AppDataContainer(private val context: Context) : AppContainer {
     override val productsRepository: IProductsRepository by lazy {
         OfflineProductsRepository(ProductDatabase.getDatabase(context).productDao())
     }

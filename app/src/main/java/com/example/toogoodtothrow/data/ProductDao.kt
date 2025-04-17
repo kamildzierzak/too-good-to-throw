@@ -27,6 +27,9 @@ interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertProduct(product: Product)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertAll(products: List<Product>)
+
     @Update
     suspend fun updateProduct(product: Product)
 
@@ -35,4 +38,6 @@ interface ProductDao {
 
     @Query("DELETE FROM product")
     suspend fun deleteAll()
+
+
 }

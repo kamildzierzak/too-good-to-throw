@@ -5,6 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @Database(entities = [Product::class], version = 1, exportSchema = false)
 @TypeConverters(ProductCategoryConverter::class)
@@ -30,9 +35,102 @@ abstract class ProductDatabase : RoomDatabase() {
                      * attempts to perform a migration with no defined migration path.
                      */
                     .fallbackToDestructiveMigration(true)
+                    .addCallback(ProductDatabaseCallback(context))
                     .build()
-                    .also { Instance = it}
+                    .also { Instance = it }
+            }
+        }
+    }
+
+    private class ProductDatabaseCallback(private val context: Context) : Callback() {
+
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            CoroutineScope(Dispatchers.IO).launch {
+                val dao = getDatabase(context).productDao()
+
+                dao.insertAll(listOfExampleProducts)
             }
         }
     }
 }
+
+val listOfExampleProducts = listOf(
+    Product(
+        id = 0,
+        name = "Żeberka",
+        expirationDate = LocalDate.now().minusDays(2).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 1,
+        unit = "kg",
+        isExpired = false,
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 0,
+        name = "Mleko 2%",
+        expirationDate = LocalDate.now().plusDays(1).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 2,
+        unit = "L",
+        isExpired = false,
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 0,
+        name = "Jajka",
+        expirationDate = LocalDate.now().minusDays(10).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 10,
+        unit = "szt",
+        isExpired = false,
+        isDiscarded = true,
+        imageUri = null
+    ),
+    Product(
+        id = 0,
+        name = "Szampon Head & Shoulders",
+        expirationDate = LocalDate.now().plusMonths(12).toEpochDay(),
+        category = ProductCategory.COSMETICS,
+        quantity = 1,
+        unit = "butelka",
+        isExpired = false,
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 0,
+        name = "Płyn do płukania jamy ustnej",
+        expirationDate = LocalDate.now().plusMonths(24).toEpochDay(),
+        category = ProductCategory.COSMETICS,
+        quantity = 1,
+        unit = "L",
+        isExpired = false,
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 0,
+        name = "Ser żółty",
+        expirationDate = LocalDate.now().plusDays(5).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 2,
+        unit = "kg",
+        isExpired = false,
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 0,
+        name = "Jogurt naturalny",
+        expirationDate = LocalDate.now().plusDays(4).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 4,
+        unit = "x125g",
+        isExpired = false,
+        isDiscarded = false,
+        imageUri = null
+    )
+)

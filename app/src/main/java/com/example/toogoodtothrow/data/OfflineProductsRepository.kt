@@ -3,7 +3,7 @@ package com.example.toogoodtothrow.data
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class OfflineProductsRepository @Inject constructor(private val productDao: ProductDao):
+class OfflineProductsRepository @Inject constructor(private val productDao: ProductDao) :
     IProductsRepository {
 
     override fun getAllProducts(): Flow<List<Product>> = productDao.getAllProducts()
@@ -17,6 +17,10 @@ class OfflineProductsRepository @Inject constructor(private val productDao: Prod
         productDao.getProductsByExpiredStatus(isExpired)
 
     override suspend fun insertProduct(product: Product) = productDao.insertProduct(product)
+
+    override suspend fun insertAllProducts(products: List<Product>) {
+        productDao.insertAll(products)
+    }
 
     override suspend fun updateProduct(product: Product) = productDao.updateProduct(product)
 
