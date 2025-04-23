@@ -1,19 +1,18 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.2"
 kotlin = "2.0.21"
-coreKtx = "1.10.1"
+coreKtx = "1.16.0"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.6.1"
-activityCompose = "1.8.0"
-composeBom = "2024.09.00"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.10.1"
+composeBom = "2025.04.00"
 kspVersion = "2.0.21-1.0.27"
 roomVersion = "2.7.0"
-hiltVersion = "2.51.1"
 navigationCompose = "2.8.9"
-hiltNavigationCompose = "1.2.0"
 coilVersion = "2.4.0"
+material3 = "1.3.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,14 +28,11 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomVersion" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomVersion" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hiltVersion" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilVersion" }
 
 [plugins]
@@ -44,5 +40,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kspAndroid = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
-hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 

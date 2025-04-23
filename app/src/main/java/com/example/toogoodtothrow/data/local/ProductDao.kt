@@ -1,4 +1,4 @@
-package com.example.toogoodtothrow.data
+package com.example.toogoodtothrow.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -21,9 +21,6 @@ interface ProductDao {
     @Query("SELECT * FROM product WHERE category = :category ORDER BY expirationDate ASC")
     fun getProductsByCategory(category: ProductCategory): Flow<List<Product>>
 
-    @Query("SELECT * FROM product WHERE isExpired = :isExpired ORDER BY expirationDate ASC")
-    fun getProductsByExpiredStatus(isExpired: Boolean): Flow<List<Product>>
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertProduct(product: Product)
 
@@ -38,6 +35,4 @@ interface ProductDao {
 
     @Query("DELETE FROM product")
     suspend fun deleteAll()
-
-
 }

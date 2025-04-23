@@ -2,51 +2,46 @@ package com.example.toogoodtothrow.ui.screens.product_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.toogoodtothrow.data.IProductsRepository
-import com.example.toogoodtothrow.data.Product
-import com.example.toogoodtothrow.data.ProductCategory
+import com.example.toogoodtothrow.data.local.Product
+import com.example.toogoodtothrow.data.local.ProductCategory
+import com.example.toogoodtothrow.data.repository.IProductsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
-class ProductListViewModel(private val productsRepository: IProductsRepository) : ViewModel() {
+class ProductListViewModel(
+    private val productsRepository: IProductsRepository
+) : ViewModel() {
+
     private val _selectedCategory = MutableStateFlow<ProductCategory?>(null)
-    val selectedCategory: StateFlow<ProductCategory?> = _selectedCategory
+    private val _onlyValid = MutableStateFlow<Boolean>(true)
 
-    private val _showOnlyValid = MutableStateFlow<Boolean>(true)
-    val showOnlyValid: StateFlow<Boolean> = _showOnlyValid
-
-    val productListState: StateFlow<ProductListState> =
+    val productListState: StateFlow<ProductListUiState> =
         combine(
             productsRepository.getAllProducts(),
             _selectedCategory,
-            _showOnlyValid
+            _onlyValid
         ) { products, selectedCategory, onlyValid ->
-            val filteredProducts = products
-                .filter { selectedCategory == null || it.category == selectedCategory }
-                .filter {
-                    !onlyValid || !LocalDate.now()
-                        .isAfter(LocalDate.ofEpochDay(it.expirationDate))
-                }
-//                .sortedBy { it.expirationDate }
-
-            ProductListState(filteredProducts)
+            ProductListUiState(
+                all = products,
+                category = selectedCategory,
+                onlyValid = onlyValid
+            )
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-            initialValue = ProductListState()
+            initialValue = ProductListUiState()
         )
 
     fun setSelectedCategory(category: ProductCategory?) {
         _selectedCategory.value = category
     }
 
-    fun setShowOnlyValid(onlyValid: Boolean) {
-        _showOnlyValid.value = onlyValid
+    fun setShowOnlyValidProducts(onlyValid: Boolean) {
+        _onlyValid.value = onlyValid
     }
 
     fun deleteProduct(product: Product) {
@@ -55,7 +50,7 @@ class ProductListViewModel(private val productsRepository: IProductsRepository) 
         }
     }
 
-    fun markAsDiscarded(product: Product) {
+    fun markProductAsDiscarded(product: Product) {
         viewModelScope.launch {
             val updated = product.copy(isDiscarded = true)
             productsRepository.updateProduct(updated)
@@ -66,5 +61,3 @@ class ProductListViewModel(private val productsRepository: IProductsRepository) 
         private const val TIMEOUT_MILLIS = 5_000L
     }
 }
-
-data class ProductListState(val productList: List<Product> = listOf())

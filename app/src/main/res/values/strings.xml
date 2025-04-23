@@ -1,5 +1,42 @@
 <resources>
     <string name="app_name">Too Good To Throw</string>
     <string name="back_button">Cofnij</string>
-    <string name="add_product_title">Dodaj produkt</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Anuluj</string>
+
+    <!-- FloatingActionButton – save -->
+    <string name="save">Zapisz</string>
+
+    <string name="products_count">Liczba produktów: %1$d</string>
+    <string name="no_results">Brak wyników</string>
+    <string name="only_valid">Tylko ważne:</string>
+    <string name="all">Wszystkie</string>
+    <string name="cannot_edit_expired">Nie można edytować przeterminowanego lub wyrzuconego produktu.</string>
+    <string name="add_product">Dodaj produkt</string>
+    <string name="edit_product">Edytuj produkt</string>
+    <string name="confirm_dialog_title">Czy na pewno?</string>
+    <string name="confirm_discard_text">Produkt jest przeterminowany. Oznaczyć jako wyrzucony?</string>
+    <string name="confirm_delete_text">Czy na pewno chcesz usunąć ten produkt?</string>
+    <string name="cd_discard">Potwierdź wyrzucenie produktu</string>
+    <string name="cd_delete">Potwierdź usunięcie produktu</string>
+    <string name="cd_cancel">Anuluj</string>
+
+    <!-- Form fields -->
+    <string name="name_label">Nazwa</string>
+    <string name="expiration_date_label">Data ważności</string>
+    <string name="category_label">Kategoria</string>
+    <string name="quantity_label">Ilość</string>
+    <string name="unit_label">Jednostka</string>
+    <string name="select_category_placeholder">Wybierz kategorię</string>
+    <string name="category_required_error">Proszę wybrać kategorię</string>
+    <string name="expiration_date_placeholder">Wybierz datę</string>
+    <string name="select_date">Otwórz wybieracz daty</string>
+    <string name="expiration_date_error">Proszę wybrać datę w przyszłości</string>
+    <string name="select_image">Wybierz zdjęcie</string>
+    <string name="no_image_selected">Brak zdjęcia</string>
+    <string name="selected_image">Wybrane zdjęcie</string>
+    <string name="clear_image">Usuń zdjęcie</string>
+
 </resources>

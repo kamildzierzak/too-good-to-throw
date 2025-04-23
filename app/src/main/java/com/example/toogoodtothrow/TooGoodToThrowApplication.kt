@@ -1,8 +1,8 @@
 package com.example.toogoodtothrow
 
 import android.app.Application
-import com.example.toogoodtothrow.data.AppContainer
-import com.example.toogoodtothrow.data.AppDataContainer
+import com.example.toogoodtothrow.di.AppContainer
+import com.example.toogoodtothrow.di.AppDataContainer
 
 class TooGoodToThrowApplication : Application() {
 

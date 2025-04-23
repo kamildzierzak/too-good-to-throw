@@ -1,4 +1,4 @@
-package com.example.toogoodtothrow.data
+package com.example.toogoodtothrow.data.local
 
 import androidx.room.TypeConverter
 

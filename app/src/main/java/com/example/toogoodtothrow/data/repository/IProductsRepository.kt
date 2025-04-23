@@ -1,5 +1,7 @@
-package com.example.toogoodtothrow.data
+package com.example.toogoodtothrow.data.repository
 
+import com.example.toogoodtothrow.data.local.Product
+import com.example.toogoodtothrow.data.local.ProductCategory
 import kotlinx.coroutines.flow.Flow
 
 interface IProductsRepository {
@@ -9,8 +11,6 @@ interface IProductsRepository {
     fun getProductById(id: Int): Flow<Product>
 
     fun getProductsByCategory(category: ProductCategory): Flow<List<Product>>
-
-    fun getProductsByExpiredStatus(isExpired: Boolean): Flow<List<Product>>
 
     suspend fun insertProduct(product: Product)
 

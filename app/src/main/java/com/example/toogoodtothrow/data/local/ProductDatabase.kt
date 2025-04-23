@@ -1,4 +1,4 @@
-package com.example.toogoodtothrow.data
+package com.example.toogoodtothrow.data.local
 
 import android.content.Context
 import androidx.room.Database
@@ -63,73 +63,66 @@ val listOfExampleProducts = listOf(
         category = ProductCategory.FOOD,
         quantity = 1,
         unit = "kg",
-        isExpired = false,
         isDiscarded = false,
         imageUri = null
     ),
     Product(
-        id = 0,
+        id = 1,
         name = "Mleko 2%",
         expirationDate = LocalDate.now().plusDays(1).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 2,
         unit = "L",
-        isExpired = false,
         isDiscarded = false,
         imageUri = null
     ),
     Product(
-        id = 0,
+        id = 2,
         name = "Jajka",
         expirationDate = LocalDate.now().minusDays(10).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 10,
         unit = "szt",
-        isExpired = false,
         isDiscarded = true,
         imageUri = null
     ),
     Product(
-        id = 0,
+        id = 3,
         name = "Szampon Head & Shoulders",
         expirationDate = LocalDate.now().plusMonths(12).toEpochDay(),
         category = ProductCategory.COSMETICS,
         quantity = 1,
         unit = "butelka",
-        isExpired = false,
         isDiscarded = false,
         imageUri = null
     ),
     Product(
-        id = 0,
+        id = 4,
         name = "Płyn do płukania jamy ustnej",
         expirationDate = LocalDate.now().plusMonths(24).toEpochDay(),
         category = ProductCategory.COSMETICS,
         quantity = 1,
         unit = "L",
-        isExpired = false,
         isDiscarded = false,
         imageUri = null
     ),
     Product(
-        id = 0,
+        id = 5,
         name = "Ser żółty",
         expirationDate = LocalDate.now().plusDays(5).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 2,
         unit = "kg",
-        isExpired = false,
         isDiscarded = false,
         imageUri = null
     ),
     Product(
-        id = 0,
+        id = 6,
         name = "Jogurt naturalny",
         expirationDate = LocalDate.now().plusDays(4).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 4,
         unit = "x125g",
-        isExpired = false,
         isDiscarded = false,
         imageUri = null
     )

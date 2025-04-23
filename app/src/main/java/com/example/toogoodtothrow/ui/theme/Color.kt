@@ -9,3 +9,8 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+
+val ExpiredRed = Color(0xFFEA3546)
+val OneDayWarning = Color(0xFFF86624)
+val FreshGreen = Color(0xFF06D6A0)
+val DiscardedGrey = Color(0xFF424342)
