@@ -6,12 +6,21 @@
     <string name="ok">OK</string>
     <string name="cancel">Anuluj</string>
 
+    <!-- Product status -->
+    <string name="status_ok">OK</string>
+    <string name="status_one_day">Za 1 dzień</string>
+    <string name="status_expired">Przeterminowany</string>
+    <string name="status_discarded">Wyrzucony</string>
+
+    <!-- Accessibility -->
+    <string name="product_image">Zdjęcie produktu %1$s</string>
+
     <!-- FloatingActionButton – save -->
     <string name="save">Zapisz</string>
 
     <string name="products_count">Liczba produktów: %1$d</string>
     <string name="no_results">Brak wyników</string>
-    <string name="only_valid">Tylko ważne:</string>
+    <string name="only_valid">Pokaż ważne produkty:</string>
     <string name="all">Wszystkie</string>
     <string name="cannot_edit_expired">Nie można edytować przeterminowanego lub wyrzuconego produktu.</string>
     <string name="add_product">Dodaj produkt</string>

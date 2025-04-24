@@ -20,10 +20,14 @@ fun Product.formattedDate(): String =
 
 fun Product.cardColor(cs: ColorScheme): Color = when {
     isDiscarded -> cs.surfaceVariant
-    isExpired -> cs.error
-    isOneDayBeforeExpiry -> cs.secondary
+    isExpired -> cs.errorContainer
+    isOneDayBeforeExpiry -> cs.tertiaryContainer
     else -> cs.primaryContainer
 }
 
-fun Product.textColor(cs: ColorScheme): Color =
-    if (isDiscarded || isExpired) cs.onError else cs.onPrimaryContainer
+fun Product.textColor(cs: ColorScheme): Color = when {
+    isDiscarded -> cs.onSurfaceVariant
+    isExpired -> cs.onErrorContainer
+    isOneDayBeforeExpiry -> cs.onTertiaryContainer
+    else -> cs.onPrimaryContainer
+}

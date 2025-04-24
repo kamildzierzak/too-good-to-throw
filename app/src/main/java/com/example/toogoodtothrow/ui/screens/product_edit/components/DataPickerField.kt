@@ -1,6 +1,6 @@
 package com.example.toogoodtothrow.ui.screens.product_edit.components
 
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,14 +21,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.toogoodtothrow.R
-import com.example.toogoodtothrow.ui.theme.DateFormats
 import com.example.toogoodtothrow.ui.theme.Spacing
 import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
 import java.time.Instant
@@ -45,28 +43,23 @@ fun DatePickerField(
     onDateSelected: (LocalDate) -> Unit,
     error: String? = null
 ) {
-    var showPicker by remember { mutableStateOf(false) }
-    val fmt = DateTimeFormatter.ofPattern(DateFormats.DD_MM_YYYY)
-    val displayText = selectedDate?.format(fmt)
-        ?: stringResource(R.string.expiration_date_placeholder)
+    var showDialog by remember { mutableStateOf(false) }
 
-    // 1) Prepare the DatePickerState
+    val formattedProductDate = remember { DateTimeFormatter.ofPattern("dd-MM-yyyy") }
+    val expirationDateText = selectedDate?.format(formattedProductDate)
+        ?: stringResource(R.string.expiration_date_placeholder)  // placeholder :contentReference[oaicite:8]{index=8}
+
     val pickerState = rememberDatePickerState(
         initialDisplayedMonthMillis = selectedDate
-            ?.atStartOfDay(ZoneId.systemDefault())
-            ?.toInstant()
-            ?.toEpochMilli()
+            ?.atStartOfDay(ZoneId.systemDefault())?.toInstant()?.toEpochMilli()
             ?: Instant.now().toEpochMilli(),
         initialSelectedDateMillis = selectedDate
-            ?.atStartOfDay(ZoneId.systemDefault())
-            ?.toInstant()
-            ?.toEpochMilli()
+            ?.atStartOfDay(ZoneId.systemDefault())?.toInstant()?.toEpochMilli()
     )
 
-    // 2) Show the Material3 DatePickerDialog when requested
-    if (showPicker) {
+    if (showDialog) {
         DatePickerDialog(
-            onDismissRequest = { showPicker = false },
+            onDismissRequest = { showDialog = false },
             confirmButton = {
                 Button(onClick = {
                     pickerState.selectedDateMillis?.let { ms ->
@@ -75,14 +68,14 @@ fun DatePickerField(
                             .toLocalDate()
                         onDateSelected(dt)
                     }
-                    showPicker = false
+                    showDialog = false
                 }) {
-                    Text(stringResource(android.R.string.ok))
+                    Text(stringResource(R.string.ok))
                 }
             },
             dismissButton = {
-                Button(onClick = { showPicker = false }) {
-                    Text(stringResource(android.R.string.cancel))
+                Button(onClick = { showDialog = false }) {
+                    Text(stringResource(R.string.cancel))
                 }
             }
         ) {
@@ -90,22 +83,16 @@ fun DatePickerField(
         }
     }
 
-    // 3) Wrap your TextField in a Box that catches taps
     Box(
-        modifier
-            .then(modifier)              // preserve any caller-provided modifiers
+        modifier = modifier
             .fillMaxWidth()
             .padding(vertical = Spacing.ExtraSmall)
-            .pointerInput(Unit) {
-                detectTapGestures { showPicker = true }
-            }
-            .semantics {
-                contentDescription = "$label: $displayText"
-            }
+            .clickable { showDialog = true }          // <– TU jest klucz
+            .semantics { contentDescription = "$label: $expirationDateText" }
     ) {
         OutlinedTextField(
-            value = displayText,
-            onValueChange = {},
+            value = expirationDateText,
+            onValueChange = { },
             readOnly = true,
             singleLine = true,
             isError = (error != null),

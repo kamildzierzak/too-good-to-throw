@@ -50,7 +50,9 @@ class ProductEditViewModel(
         it.copy(expirationDate = date, dateError = null)
     }
 
-    fun onCategoryChange(cat: ProductCategory) = _ui.update { it.copy(category = cat) }
+    fun onCategoryChange(cat: ProductCategory) = _ui.update {
+        it.copy(category = cat, categoryError = null)
+    }
 
     fun onQuantityChange(q: String) = _ui.update {
         it.copy(quantity = q, quantityError = null)
@@ -92,7 +94,7 @@ class ProductEditViewModel(
             id = state.id ?: 0,
             name = state.name.trim(),
             expirationDate = state.expirationDate!!.toEpochDay(),
-            category = state.category ?: ProductCategory.OTHER,
+            category = state.category!!,
             quantity = state.quantity.toIntOrNull(),
             unit = state.unit.ifBlank { null },
             isDiscarded = false,

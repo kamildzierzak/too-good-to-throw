@@ -2,12 +2,16 @@ package com.example.toogoodtothrow.ui.screens.product_list.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.toogoodtothrow.data.local.Product
 import com.example.toogoodtothrow.ui.common.previewProducts
@@ -23,18 +27,25 @@ fun ProductList(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
+    val listState = rememberLazyListState()
+    val haptics = LocalHapticFeedback.current
+
     LazyColumn(
         modifier = modifier,
-        contentPadding = contentPadding
+        state = listState,
+        contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(Spacing.Small)
     ) {
         items(items = productList, key = { it.id }) { item ->
             ProductCard(
                 product = item,
                 modifier = Modifier
-                    .padding(Spacing.Small)
                     .combinedClickable(
                         onClick = { onProductClick(item) },
-                        onLongClick = { onProductLongClick(item) }
+                        onLongClick = {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onProductLongClick(item)
+                        }
                     )
             )
         }

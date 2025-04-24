@@ -32,8 +32,8 @@ fun ProductEditScreen(
     val uiState by viewModel.productState.collectAsState()
 
     // After success move to product list
-    if (uiState.saveSuccess) {
-        LaunchedEffect(Unit) { navigateUp() }
+    LaunchedEffect(uiState.saveSuccess) {
+        if (uiState.saveSuccess) navigateUp()
     }
 
     Scaffold(

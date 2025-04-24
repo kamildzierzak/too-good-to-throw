@@ -57,9 +57,9 @@ abstract class ProductDatabase : RoomDatabase() {
 
 val listOfExampleProducts = listOf(
     Product(
-        id = 0,
-        name = "Żeberka",
-        expirationDate = LocalDate.now().minusDays(2).toEpochDay(),
+        id = 1,
+        name = "Pomidory",
+        expirationDate = LocalDate.now().plusDays(7).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 1,
         unit = "kg",
@@ -67,29 +67,89 @@ val listOfExampleProducts = listOf(
         imageUri = null
     ),
     Product(
-        id = 1,
-        name = "Mleko 2%",
+        id = 2,
+        name = "Śmietana 12%",
         expirationDate = LocalDate.now().plusDays(1).toEpochDay(),
         category = ProductCategory.FOOD,
-        quantity = 2,
-        unit = "L",
+        quantity = 1,
+        unit = null,
         isDiscarded = false,
         imageUri = null
     ),
     Product(
-        id = 2,
+        id = 3,
         name = "Jajka",
         expirationDate = LocalDate.now().minusDays(10).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 10,
         unit = "szt",
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 4,
+        name = "Maść na ból czubka nosa",
+        expirationDate = LocalDate.now().minusMonths(1).toEpochDay(),
+        category = ProductCategory.MEDICINE,
+        quantity = 1,
+        unit = "opakowanie",
         isDiscarded = true,
         imageUri = null
     ),
     Product(
-        id = 3,
-        name = "Szampon Head & Shoulders",
-        expirationDate = LocalDate.now().plusMonths(12).toEpochDay(),
+        id = 5,
+        name = "Pasta do zębów",
+        expirationDate = LocalDate.now().plusMonths(24).toEpochDay(),
+        category = ProductCategory.COSMETICS,
+        quantity = 1,
+        unit = "tubka",
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 6,
+        name = "Ser żółty",
+        expirationDate = LocalDate.now().plusDays(5).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 1,
+        unit = "kg",
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 7,
+        name = "Jogurt naturalny",
+        expirationDate = LocalDate.now().plusDays(4).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 4,
+        unit = "opakowania",
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 8,
+        name = "Mleko 2%",
+        expirationDate = LocalDate.now().plusDays(2).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 1,
+        unit = "l",
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 9,
+        name = "Banany",
+        expirationDate = LocalDate.now().plusDays(3).toEpochDay(),
+        category = ProductCategory.FOOD,
+        quantity = 6,
+        unit = "szt",
+        isDiscarded = false,
+        imageUri = null
+    ),
+    Product(
+        id = 10,
+        name = "Szampon ziołowy",
+        expirationDate = LocalDate.now().plusMonths(18).toEpochDay(),
         category = ProductCategory.COSMETICS,
         quantity = 1,
         unit = "butelka",
@@ -97,32 +157,22 @@ val listOfExampleProducts = listOf(
         imageUri = null
     ),
     Product(
-        id = 4,
-        name = "Płyn do płukania jamy ustnej",
-        expirationDate = LocalDate.now().plusMonths(24).toEpochDay(),
-        category = ProductCategory.COSMETICS,
+        id = 11,
+        name = "Ibuprofen 200 mg",
+        expirationDate = LocalDate.now().plusMonths(6).toEpochDay(),
+        category = ProductCategory.MEDICINE,
         quantity = 1,
-        unit = "L",
+        unit = "opakowanie",
         isDiscarded = false,
         imageUri = null
     ),
     Product(
-        id = 5,
-        name = "Ser żółty",
-        expirationDate = LocalDate.now().plusDays(5).toEpochDay(),
+        id = 12,
+        name = "Masło",
+        expirationDate = LocalDate.now().minusDays(3).toEpochDay(),
         category = ProductCategory.FOOD,
-        quantity = 2,
-        unit = "kg",
-        isDiscarded = false,
-        imageUri = null
-    ),
-    Product(
-        id = 6,
-        name = "Jogurt naturalny",
-        expirationDate = LocalDate.now().plusDays(4).toEpochDay(),
-        category = ProductCategory.FOOD,
-        quantity = 4,
-        unit = "x125g",
+        quantity = 200,
+        unit = "g",
         isDiscarded = false,
         imageUri = null
     )

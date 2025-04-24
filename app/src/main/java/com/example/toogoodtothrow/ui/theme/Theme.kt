@@ -8,35 +8,49 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
-)
-
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    primary = FreshGreenLight,
     onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primaryContainer = FreshGreenLight,
+    onPrimaryContainer = Color.White,
+
+    secondary = Color(0xFF1565C0),
+    tertiaryContainer = WarningOrangeLight,
+    onTertiaryContainer = Color(0xFF231A00),
+
+    errorContainer = ExpiredRedLight,
+    onErrorContainer = Color(0xFF410002),
+
+    surfaceVariant = DiscardGreyLight,
+    onSurfaceVariant = Color(0xFF1D1B20),
 )
+
+private val DarkColorScheme = darkColorScheme(
+    primary = FreshGreenDark,
+    onPrimary = Color(0xFF00391D),
+    primaryContainer = FreshGreenDark,
+    onPrimaryContainer = Color.Black,
+
+    secondary = Color(0xFF90CAF9),
+    tertiaryContainer = WarningOrangeDark,
+    onTertiaryContainer = Color(0xFFFFF3E0),
+
+    errorContainer = ExpiredRedDark,
+    onErrorContainer = Color(0xFFFFDAD6),
+
+    surfaceVariant = DiscardGreyDark,
+    onSurfaceVariant = Color(0xFFC4C3C8),
+)
+
 
 @Composable
 fun TooGoodToThrowTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -50,8 +64,6 @@ fun TooGoodToThrowTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+        colorScheme = colorScheme, typography = Typography, content = content
     )
 }

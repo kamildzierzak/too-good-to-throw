@@ -7,8 +7,8 @@ import java.time.LocalDate
 val previewProducts = listOf(
     Product(
         id = 1,
-        name = "Żeberka",
-        expirationDate = LocalDate.now().minusDays(2).toEpochDay(),
+        name = "Pomidory",
+        expirationDate = LocalDate.now().plusDays(7).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 1,
         unit = "kg",
@@ -17,11 +17,11 @@ val previewProducts = listOf(
     ),
     Product(
         id = 2,
-        name = "Mleko 2%",
+        name = "Śmietana 12%",
         expirationDate = LocalDate.now().plusDays(1).toEpochDay(),
         category = ProductCategory.FOOD,
-        quantity = 2,
-        unit = "L",
+        quantity = 1,
+        unit = null,
         isDiscarded = false,
         imageUri = null
     ),
@@ -32,26 +32,26 @@ val previewProducts = listOf(
         category = ProductCategory.FOOD,
         quantity = 10,
         unit = "szt",
-        isDiscarded = true,
-        imageUri = null
-    ),
-    Product(
-        id = 4,
-        name = "Szampon Head & Shoulders",
-        expirationDate = LocalDate.now().plusMonths(12).toEpochDay(),
-        category = ProductCategory.COSMETICS,
-        quantity = 1,
-        unit = "butelka",
         isDiscarded = false,
         imageUri = null
     ),
     Product(
+        id = 4,
+        name = "Maść na ból czubka nosa",
+        expirationDate = LocalDate.now().minusMonths(1).toEpochDay(),
+        category = ProductCategory.MEDICINE,
+        quantity = 1,
+        unit = "opakowanie",
+        isDiscarded = true,
+        imageUri = null
+    ),
+    Product(
         id = 5,
-        name = "Płyn do płukania jamy ustnej",
+        name = "Pasta do zębów",
         expirationDate = LocalDate.now().plusMonths(24).toEpochDay(),
         category = ProductCategory.COSMETICS,
         quantity = 1,
-        unit = "L",
+        unit = "tubka",
         isDiscarded = false,
         imageUri = null
     ),
@@ -60,7 +60,7 @@ val previewProducts = listOf(
         name = "Ser żółty",
         expirationDate = LocalDate.now().plusDays(5).toEpochDay(),
         category = ProductCategory.FOOD,
-        quantity = 2,
+        quantity = 1,
         unit = "kg",
         isDiscarded = false,
         imageUri = null
@@ -71,7 +71,7 @@ val previewProducts = listOf(
         expirationDate = LocalDate.now().plusDays(4).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 4,
-        unit = "x125g",
+        unit = "opakowania",
         isDiscarded = false,
         imageUri = null
     )

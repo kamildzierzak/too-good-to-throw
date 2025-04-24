@@ -5,6 +5,7 @@ import com.example.toogoodtothrow.data.local.ProductCategory
 import java.time.LocalDate
 
 data class ProductEditUiState(
+    // product fields
     val id: Int? = null,
     val name: String = "",
     val expirationDate: LocalDate? = null,
@@ -13,16 +14,15 @@ data class ProductEditUiState(
     val unit: String = "",
     val imageUri: Uri? = null,
 
-    // 4 validation
+    // fields errors
     val nameError: String? = null,
     val dateError: String? = null,
     val categoryError: String? = null,
     val quantityError: String? = null,
     val unitError: String? = null,
 
+    // other
     val isSaving: Boolean = false,
     val saveSuccess: Boolean = false,
     val saveError: String? = null
-) {
-
-}
+)

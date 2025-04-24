@@ -1,10 +1,9 @@
 package com.example.toogoodtothrow.ui.screens.product_list.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -14,8 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,53 +37,47 @@ import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
 
 @Composable
 fun ProductCard(
-    product: Product,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    product: Product
 ) {
-    val isOneDayBeforeExpiry = product.isOneDayBeforeExpiry
-    val isExpired = product.isExpired
-
     val cardColor = product.cardColor(MaterialTheme.colorScheme)
     val textColor = product.textColor(MaterialTheme.colorScheme)
     val formattedDate = product.formattedDate()
 
     Card(
         modifier = modifier
-            .fillMaxWidth(),
+            .semantics { contentDescription = product.name },
+        colors = CardDefaults.cardColors(cardColor),
         elevation = CardDefaults.cardElevation(defaultElevation = Spacing.ExtraSmall),
-        colors = CardDefaults.cardColors(cardColor)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(Spacing.Small),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            AsyncImage(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(2f)
-            ) {
-                AsyncImage(
-                    modifier = Modifier.fillMaxHeight(),
-                    model = product.imageUri,
-                    contentDescription = product.name,
-                    contentScale = ContentScale.Fit,
-                    placeholder = painterResource(id = R.drawable.placeholder),
-                    error = painterResource(id = R.drawable.placeholder)
-                )
-            }
+                    .aspectRatio(1f)
+                    .weight(1f)
+                    .clip(shape = MaterialTheme.shapes.medium),
+                model = product.imageUri,
+                contentDescription = product.name,
+                placeholder = painterResource(id = R.drawable.placeholder),
+                error = painterResource(id = R.drawable.placeholder),
+                contentScale = ContentScale.Crop
+            )
 
             Column(
                 modifier = Modifier
-                    .padding(Spacing.Small)
-                    .weight(1.5f),
+                    .padding(start = Spacing.Small)
+                    .weight(2f),
                 verticalArrangement = Arrangement.spacedBy(Spacing.ExtraSmall)
             ) {
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
                     text = product.name,
                     style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = textColor
+                    color = textColor,
+                    textAlign = TextAlign.Center
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -89,59 +86,43 @@ fun ProductCard(
                     Text(
                         text = product.category.toPolish(),
                         style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.End,
-                        color = textColor
+                        color = textColor,
+                        textAlign = TextAlign.End
                     )
 
                     if (product.quantity != null && product.unit != null) {
                         Text(
                             text = "${product.quantity} ${product.unit}",
                             style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.End,
-                            color = textColor
+                            color = textColor,
+                            textAlign = TextAlign.End
                         )
                     }
                 }
 
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
                     text = formattedDate,
                     style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = textColor
+                    color = textColor,
+                    textAlign = TextAlign.Center
                 )
 
-                if (isExpired) {
-                    Text(
-                        text = "Przeterminowany",
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                        color = textColor,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = Spacing.Small)
-                    )
-                } else if (isOneDayBeforeExpiry) {
-                    Text(
-                        text = "Za 1 dzień",
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                        color = textColor,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = Spacing.Small)
-                    )
-                } else {
-                    Text(
-                        text = "OK",
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                        color = textColor,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = Spacing.Small)
-                    )
+                val productStatus = when {
+                    product.isDiscarded -> R.string.status_discarded
+                    product.isExpired -> R.string.status_expired
+                    product.isOneDayBeforeExpiry -> R.string.status_one_day
+                    else -> R.string.status_ok
                 }
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = stringResource(productStatus),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                    color = textColor,
+                    textAlign = TextAlign.Center
+                )
+
             }
         }
     }
@@ -149,10 +130,32 @@ fun ProductCard(
 
 @Preview(showBackground = true)
 @Composable
-fun ProductCardPreview() {
+private fun CardFreshPreview() {
     TooGoodToThrowTheme {
-        ProductCard(
-            previewProducts.first()
-        )
+        ProductCard(product = previewProducts[0])
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardOneDayPreview() {
+    TooGoodToThrowTheme {
+        ProductCard(product = previewProducts[1])
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardExpiredPreview() {
+    TooGoodToThrowTheme {
+        ProductCard(product = previewProducts[2])
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardDiscardedPreview() {
+    TooGoodToThrowTheme {
+        ProductCard(product = previewProducts[3])
     }
 }
