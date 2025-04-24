@@ -55,7 +55,7 @@ abstract class ProductDatabase : RoomDatabase() {
     }
 }
 
-val listOfExampleProducts = listOf(
+private val listOfExampleProducts = listOf(
     Product(
         id = 1,
         name = "Pomidory",

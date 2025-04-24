@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,14 +36,13 @@ fun ProductFilters(
     val onlyValidLabel = stringResource(R.string.only_valid)
 
     Column(
-        modifier = modifier
-            .padding(vertical = Spacing.Small)
+        modifier = modifier.padding(vertical = Spacing.Small)
     ) {
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = Spacing.Small),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.Small),
+                .padding(vertical = Spacing.ExtraSmall, horizontal = Spacing.Small),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalArrangement = Arrangement.spacedBy(Spacing.Small)
         ) {
             CategoryChip(
@@ -54,28 +54,27 @@ fun ProductFilters(
                 CategoryChip(
                     label = category.toPolish(),
                     selected = category == selectedCategory,
-                    onClick = { onCategorySelected(category) }
-                )
+                    onClick = { onCategorySelected(category) })
             }
         }
 
         Row(
             modifier = Modifier
-                .padding(start = Spacing.Small),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .padding(horizontal = Spacing.Small),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
         ) {
             Text(
-                modifier = Modifier
-                    .padding(end = Spacing.Small),
-                text = onlyValidLabel
+                modifier = Modifier.padding(end = Spacing.Small),
+                text = onlyValidLabel,
+                style = MaterialTheme.typography.labelLarge
             )
             Switch(
-                modifier = Modifier
-                    .semantics { contentDescription = onlyValidLabel },
+                modifier = Modifier.semantics { contentDescription = onlyValidLabel },
                 checked = showOnlyValid,
                 onCheckedChange = onToggleValidOnly,
-
-                )
+            )
         }
     }
 }
@@ -88,8 +87,7 @@ private fun ProductFiltersPreview_All() {
             selectedCategory = null,
             showOnlyValid = false,
             onCategorySelected = {},
-            onToggleValidOnly = {}
-        )
+            onToggleValidOnly = {})
     }
 }
 
@@ -101,7 +99,6 @@ private fun ProductFiltersPreview_FoodOnlyValid() {
             selectedCategory = ProductCategory.FOOD,
             showOnlyValid = true,
             onCategorySelected = {},
-            onToggleValidOnly = {}
-        )
+            onToggleValidOnly = {})
     }
 }

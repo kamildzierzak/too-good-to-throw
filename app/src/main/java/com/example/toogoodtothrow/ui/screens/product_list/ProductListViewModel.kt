@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(
@@ -17,22 +18,17 @@ class ProductListViewModel(
 ) : ViewModel() {
 
     private val _selectedCategory = MutableStateFlow<ProductCategory?>(null)
-    private val _onlyValid = MutableStateFlow<Boolean>(true)
-
-    val productListState: StateFlow<ProductListUiState> =
+    private val _onlyValid = MutableStateFlow(true)
+    
+    val uiState: StateFlow<ProductListUiState> =
         combine(
             productsRepository.getAllProducts(),
             _selectedCategory,
-            _onlyValid
-        ) { products, selectedCategory, onlyValid ->
-            ProductListUiState(
-                all = products,
-                category = selectedCategory,
-                onlyValid = onlyValid
-            )
-        }.stateIn(
+            _onlyValid,
+            ::ProductListUiState
+        ).stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = ProductListUiState()
         )
 
@@ -40,9 +36,7 @@ class ProductListViewModel(
         _selectedCategory.value = category
     }
 
-    fun setShowOnlyValidProducts(onlyValid: Boolean) {
-        _onlyValid.value = onlyValid
-    }
+    fun toggleValidOnly() = _onlyValid.update { !it }
 
     fun deleteProduct(product: Product) {
         viewModelScope.launch {
@@ -55,9 +49,5 @@ class ProductListViewModel(
             val updated = product.copy(isDiscarded = true)
             productsRepository.updateProduct(updated)
         }
-    }
-
-    companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
     }
 }

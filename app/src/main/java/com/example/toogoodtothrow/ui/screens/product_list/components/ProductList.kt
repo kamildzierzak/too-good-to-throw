@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -27,12 +26,11 @@ fun ProductList(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
-    val listState = rememberLazyListState()
     val haptics = LocalHapticFeedback.current
 
     LazyColumn(
-        modifier = modifier,
-        state = listState,
+        modifier = modifier
+            .padding(all = Spacing.Small),
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(Spacing.Small)
     ) {
@@ -54,7 +52,7 @@ fun ProductList(
 
 @Preview(showBackground = true)
 @Composable
-fun ProductListPreview() {
+private fun ProductListPreview() {
     TooGoodToThrowTheme {
         ProductList(
             productList = previewProducts,

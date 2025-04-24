@@ -14,11 +14,13 @@
 
     <!-- Accessibility -->
     <string name="product_image">Zdjęcie produktu %1$s</string>
+    <string name="hint_long_press_delete">Przytrzymaj, aby usunąć lub oznaczyć wyrzucenie</string>
+
 
     <!-- FloatingActionButton – save -->
     <string name="save">Zapisz</string>
 
-    <string name="products_count">Liczba produktów: %1$d</string>
+    <string name="products_count">%1$d produktów</string>
     <string name="no_results">Brak wyników</string>
     <string name="only_valid">Pokaż ważne produkty:</string>
     <string name="all">Wszystkie</string>

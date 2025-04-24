@@ -11,7 +11,9 @@ data class ProductListUiState(
 ) {
     val visibleProducts: List<Product>
         get() = all
+            .asSequence()
             .filter { category == null || it.category == category }
             .filter { !onlyValid || !it.isExpired }
             .sortedBy { it.expirationDate }
+            .toList()
 }
