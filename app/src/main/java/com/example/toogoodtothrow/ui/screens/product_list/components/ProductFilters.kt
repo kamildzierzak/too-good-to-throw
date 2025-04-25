@@ -33,7 +33,7 @@ fun ProductFilters(
     onToggleValidOnly: (Boolean) -> Unit
 ) {
     val allLabel = stringResource(R.string.all)
-    val onlyValidLabel = stringResource(R.string.only_valid)
+    val onlyValidLabel = stringResource(R.string.only_valid_products_label)
 
     Column(
         modifier = modifier.padding(vertical = Spacing.Small)

@@ -19,8 +19,8 @@ class ProductListViewModel(
 
     private val _selectedCategory = MutableStateFlow<ProductCategory?>(null)
     private val _onlyValid = MutableStateFlow(true)
-    
-    val uiState: StateFlow<ProductListUiState> =
+
+    private val _uiState: StateFlow<ProductListUiState> =
         combine(
             productsRepository.getAllProducts(),
             _selectedCategory,
@@ -31,6 +31,7 @@ class ProductListViewModel(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = ProductListUiState()
         )
+    val uiState: StateFlow<ProductListUiState> = _uiState
 
     fun setSelectedCategory(category: ProductCategory?) {
         _selectedCategory.value = category

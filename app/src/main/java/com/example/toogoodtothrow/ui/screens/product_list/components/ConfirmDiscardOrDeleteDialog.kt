@@ -33,12 +33,12 @@ fun ConfirmDiscardOrDeleteDialog(
 
     val confirmLabel = stringResource(R.string.yes)
     val confirmDesc = if (isExpired)
-        stringResource(R.string.cd_discard)
+        stringResource(R.string.yes)
     else
-        stringResource(R.string.cd_delete)
+        stringResource(R.string.yes)
 
     val cancelLabel = stringResource(R.string.no)
-    val cancelDesc = stringResource(R.string.cd_cancel)
+    val cancelDesc = stringResource(R.string.cancel)
 
     AlertDialog(
         modifier = modifier,
@@ -57,7 +57,9 @@ fun ConfirmDiscardOrDeleteDialog(
         },
         confirmButton = {
             TextButton(
-                modifier = Modifier.semantics { contentDescription = confirmDesc },
+                modifier = Modifier.semantics {
+                    contentDescription = confirmDesc
+                },
                 onClick = {
                     onConfirm(product)
                     onDismiss()

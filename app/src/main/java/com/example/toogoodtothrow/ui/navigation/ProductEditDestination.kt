@@ -2,7 +2,7 @@ package com.example.toogoodtothrow.ui.navigation
 
 import com.example.toogoodtothrow.R
 
-object ProductEditDestination : NavigationDestination {
+object ProductEditDestination : INavigationDestination {
     const val PRODUCT_ID_ARG = "productId"
     override val route: String = "product_edit"
     override val titleRes: Int = R.string.edit_product

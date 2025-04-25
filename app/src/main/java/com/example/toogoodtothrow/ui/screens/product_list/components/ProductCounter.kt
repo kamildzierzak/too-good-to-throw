@@ -22,7 +22,7 @@ fun ProductCounter(
     modifier: Modifier = Modifier,
     total: Int
 ) {
-    val countLabel = stringResource(R.string.products_count, total)
+    val countLabel = stringResource(R.string.products_count_label, total)
     Row(
         modifier = modifier
             .fillMaxWidth()

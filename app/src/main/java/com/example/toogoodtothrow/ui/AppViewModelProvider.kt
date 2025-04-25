@@ -6,7 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.toogoodtothrow.TooGoodToThrowApplication
-import com.example.toogoodtothrow.ui.screens.product_edit.ProductEditViewModel
+import com.example.toogoodtothrow.ui.screens.product_form.ProductFormViewModel
 import com.example.toogoodtothrow.ui.screens.product_list.ProductListViewModel
 
 /**
@@ -16,14 +16,16 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         // Initializer for ProductListViewModel
         initializer {
-            ProductListViewModel(application().container.productsRepository)
+            ProductListViewModel(
+                productsRepository = application().container.productsRepository
+            )
         }
 
         // Initializer for ProductEditViewModel
         initializer {
-            ProductEditViewModel(
-                application().container.productsRepository,
-                this.createSavedStateHandle()
+            ProductFormViewModel(
+                productsRepository = application().container.productsRepository,
+                savedStateHandle = this.createSavedStateHandle()
             )
         }
     }

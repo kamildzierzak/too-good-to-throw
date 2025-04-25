@@ -78,7 +78,8 @@ fun ProductListScreen(
         }
     ) { innerPadding ->
         ProductListBody(
-            modifier = Modifier.padding(top = innerPadding.calculateTopPadding()),
+            modifier = Modifier
+                .padding(top = innerPadding.calculateTopPadding()),
             productList = uiState.visibleProducts,
             selectedCategory = uiState.category,
             onCategorySelected = viewModel::setSelectedCategory,

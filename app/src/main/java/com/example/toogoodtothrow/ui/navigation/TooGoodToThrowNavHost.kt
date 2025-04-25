@@ -7,13 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.toogoodtothrow.ui.screens.product_edit.ProductEditScreen
+import com.example.toogoodtothrow.ui.screens.product_form.ProductFormScreen
 import com.example.toogoodtothrow.ui.screens.product_list.ProductListScreen
-
-interface NavigationDestination {
-    val route: String
-    val titleRes: Int
-}
 
 @Composable
 fun TooGoodToThrowNavHost(
@@ -25,6 +20,7 @@ fun TooGoodToThrowNavHost(
         startDestination = ProductListDestination.route,
         modifier = modifier
     ) {
+        // Product list
         composable(route = ProductListDestination.route) {
             ProductListScreen(
                 navigateToProductDetail = {
@@ -36,6 +32,7 @@ fun TooGoodToThrowNavHost(
             )
         }
 
+        // Product add, edit and detail
         composable(
             route = ProductEditDestination.routeWithArgs,
             arguments = listOf(
@@ -49,9 +46,10 @@ fun TooGoodToThrowNavHost(
             val rawId = backStack.arguments?.getInt(ProductEditDestination.PRODUCT_ID_ARG) ?: -1
             val productId: Int? = rawId.takeIf { it >= 0 }
 
-            ProductEditScreen(
+            ProductFormScreen(
                 productId = productId,
-                navigateUp = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onSaveFinished = { navController.popBackStack() }
             )
         }
     }

@@ -28,7 +28,7 @@ fun ProductListBody(
     onProductLongClick: (Product) -> Unit,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    val emptyLabel = stringResource(R.string.no_results)
+    val emptyLabel = stringResource(R.string.no_results_label)
 
     Column(
         modifier = modifier,
