@@ -14,6 +14,7 @@ data class ProductFormUiState(
     val isDiscarded: Boolean = false,
     val isValid: Boolean = false,
 
+    val isFormTouched: Boolean = false,
     val nameError: Int? = null,
     val dateError: Int? = null,
     val quantityError: Int? = null,

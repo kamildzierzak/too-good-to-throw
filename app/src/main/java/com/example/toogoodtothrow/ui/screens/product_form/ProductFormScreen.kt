@@ -32,7 +32,7 @@ fun ProductFormScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
-    
+
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -55,7 +55,7 @@ fun ProductFormScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { if (uiState.isValid) viewModel.saveProduct(onSaveFinished) }) {
+                onClick = { viewModel.saveProduct(onSaveFinished) }) {
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = stringResource(R.string.save)

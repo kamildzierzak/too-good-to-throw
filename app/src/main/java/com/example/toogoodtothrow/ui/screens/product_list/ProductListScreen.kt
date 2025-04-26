@@ -115,16 +115,18 @@ fun ProductListScreen(
         )
 
         productToModify?.let { product ->
-            ConfirmDiscardOrDeleteDialog(
-                product = product,
-                onConfirm = { p ->
-                    if (p.isExpired) viewModel.markProductAsDiscarded(p)
-                    else viewModel.deleteProduct(p)
-                },
-                onDismiss = {
-                    productToModify = null
-                }
-            )
+            if (!product.isDiscarded) {
+                ConfirmDiscardOrDeleteDialog(
+                    product = product,
+                    onConfirm = { p ->
+                        if (p.isExpired) viewModel.markProductAsDiscarded(p)
+                        else viewModel.deleteProduct(p)
+                    },
+                    onDismiss = {
+                        productToModify = null
+                    }
+                )
+            }
         }
     }
 }

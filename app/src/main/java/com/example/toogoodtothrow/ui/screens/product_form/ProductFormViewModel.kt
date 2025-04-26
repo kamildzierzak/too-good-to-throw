@@ -25,8 +25,7 @@ import java.time.LocalDate
 
 @OptIn(FlowPreview::class)
 class ProductFormViewModel(
-    private val productsRepository: IProductsRepository,
-    savedStateHandle: SavedStateHandle
+    private val productsRepository: IProductsRepository, savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val rawProductId: Int = savedStateHandle["productId"] ?: -1
@@ -34,6 +33,8 @@ class ProductFormViewModel(
 
     private val _uiState = MutableStateFlow(ProductFormUiState())
     val uiState: StateFlow<ProductFormUiState> = _uiState
+
+    private var initialFormState: ProductFormUiState? = null
 
     // if we are editing, load the existing product and fill the form
     init {
@@ -43,14 +44,16 @@ class ProductFormViewModel(
                     _uiState.value = product.toFormUiState()
                 }
             }
+        } ?: run {
+            initialFormState = ProductFormUiState()
         }
 
         viewModelScope.launch {
-            uiState
-                .debounce(500)
-                .collect {
+            uiState.debounce(500).collect { state ->
+                if (initialFormState != null && state != initialFormState) {
                     _uiState.update { validate(it) }
                 }
+            }
         }
     }
 
@@ -72,6 +75,48 @@ class ProductFormViewModel(
 
     fun updateUnit(unit: String) {
         _uiState.value = _uiState.value.copy(unit = unit)
+    }
+
+    fun updateImagePath(context: Context, newUri: Uri?) {
+        viewModelScope.launch {
+            // If there is an existing image, delete it
+            val currentImagePath = _uiState.value.imagePath
+            if (currentImagePath != null) {
+                deleteImageFromInternalStorage(currentImagePath)
+            }
+
+            // Save new image to internal storage and update the UI state
+            val savedPath = newUri?.let { saveImageToInternalStorage(context, it) }
+            _uiState.value = _uiState.value.copy(imagePath = savedPath)
+        }
+    }
+
+    fun saveProduct(onFinished: () -> Unit) {
+        viewModelScope.launch {
+            val validatedState = validate(_uiState.value)
+            _uiState.value = validatedState
+
+            if (validatedState.isValid) {
+                val product = Product(
+                    id = validatedState.id ?: 0,
+                    name = validatedState.name.trim(),
+                    expirationDate = validatedState.expirationDate.toEpochDay(),
+                    category = validatedState.category,
+                    quantity = validatedState.quantity.toIntOrNull(),
+                    unit = validatedState.unit.ifBlank { null },
+                    imagePath = validatedState.imagePath,
+                    isDiscarded = validatedState.isDiscarded
+                )
+
+                if (validatedState.id != null) {
+                    productsRepository.updateProduct(product)
+                } else {
+                    productsRepository.insertProduct(product)
+                }
+
+                onFinished()
+            }
+        }
     }
 
     private fun validate(state: ProductFormUiState): ProductFormUiState {
@@ -120,54 +165,11 @@ class ProductFormViewModel(
         }
     }
 
-    fun updateImagePath(context: Context, newUri: Uri?) {
-        viewModelScope.launch {
-            // If there is an existing image, delete it
-            val currentImagePath = _uiState.value.imagePath
-            if (currentImagePath != null) {
-                deleteImageFromInternalStorage(currentImagePath)
-            }
-
-            // Save new image to internal storage and update the UI state
-            val savedPath = newUri?.let { saveImageToInternalStorage(context, it) }
-            _uiState.value = _uiState.value.copy(imagePath = savedPath)
-        }
-    }
-
     private fun deleteImageFromInternalStorage(imagePath: String?) {
         imagePath?.let {
             val file = File(it)
             if (file.exists()) {
                 file.delete()
-            }
-        }
-    }
-
-    fun saveProduct(onFinished: () -> Unit) {
-        viewModelScope.launch {
-            val validatedState = validate(_uiState.value)
-
-            if (validatedState.isValid) {
-                val product = Product(
-                    id = validatedState.id ?: 0,
-                    name = validatedState.name.trim(),
-                    expirationDate = validatedState.expirationDate.toEpochDay(),
-                    category = validatedState.category,
-                    quantity = validatedState.quantity.toIntOrNull(),
-                    unit = validatedState.unit.ifBlank { null },
-                    imagePath = validatedState.imagePath,
-                    isDiscarded = validatedState.isDiscarded
-                )
-
-                if (validatedState.id != null) {
-                    productsRepository.updateProduct(product)
-                } else {
-                    productsRepository.insertProduct(product)
-                }
-
-                onFinished()
-            } else {
-                _uiState.value = validatedState
             }
         }
     }
