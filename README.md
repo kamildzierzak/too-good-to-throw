@@ -1,6 +1,7 @@
 # PJATK - Mobile programming - Project I
 
 ## 🥔 Too good to throw 🍅
+
 **An Android app to track and manage product expiration dates**  
 Helps you reduce waste by reminding you of upcoming expirations for food, medicine & cosmetics.
 
@@ -37,4 +38,23 @@ Helps you reduce waste by reminding you of upcoming expirations for food, medici
 
 ---
 
+## ⚙️ Prerequisites
 
+- Android Studio Electric Eel (2023.1) or newer
+- JDK 11+
+
+## 🚀 Getting Started
+
+1. Clone this repository or download the ZIP.
+2. Open the project in Android Studio (File → Open → Select the project directory).
+3. Android Studio will sync Gradle and download any missing SDK components.
+4. Connect a physical device or start an Android emulator (API ≥ 26).
+5. Click Run (the ▶️ button) to install and launch the app.
+
+## 📝 Notes
+
+- Sample products are auto-inserted on first launch via Room’s callback.
+- Gradle wrapper (gradlew) ensures consistent builds; you can also run ./gradlew clean build from
+  the terminal.
+
+© 2025 Built for PJATK Mobile Programming Course

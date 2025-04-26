@@ -44,14 +44,6 @@ class ProductFormViewModel(
         } ?: run {
             initialFormState = ProductFormUiState()
         }
-
-//        viewModelScope.launch {
-//            uiState.debounce(500).collect { state ->
-//                if (initialFormState != null && state != initialFormState) {
-//                    _uiState.update { validate(it) }
-//                }
-//            }
-//        }
     }
 
     fun updateName(name: String) {
@@ -166,7 +158,7 @@ class ProductFormViewModel(
             outputStream.flush()
             outputStream.close()
 
-            file.absolutePath  // Zwracamy ścieżkę
+            file.absolutePath
         } catch (e: Exception) {
             e.printStackTrace()
             null
@@ -181,21 +173,6 @@ class ProductFormViewModel(
             }
         }
     }
-
-//    private fun ProductFormUiState.validate(): ProductFormUiState {
-//        val nameOk = name.isNotBlank()
-//        val dateOk = !expirationDate.isBefore(LocalDate.now())
-//        val quantityOk = quantity.isEmpty() || quantity.toIntOrNull() != null
-//        val unitOk = quantity.isEmpty() || unit.isNotBlank()
-//
-//        return copy(
-//            isValid = nameOk && dateOk && quantityOk && unitOk,
-//            nameError = if (!nameOk) R.string.error_name_required else null,
-//            dateError = if (!dateOk) R.string.error_date_invalid else null,
-//            quantityError = if (!quantityOk) R.string.error_quantity_invalid else null,
-//            unitError = if (!unitOk) R.string.error_unit_required else null
-//        )
-//    }
 }
 
 private fun Product.toFormUiState() = ProductFormUiState(
