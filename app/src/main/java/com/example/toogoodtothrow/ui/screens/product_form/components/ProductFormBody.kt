@@ -6,14 +6,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.toogoodtothrow.R
@@ -48,6 +54,10 @@ fun ProductFormBody(
     imageUri: String?,
     onPickImageClick: () -> Unit,
 ) {
+    val focusManager = LocalFocusManager.current
+    val quantityFocusRequester = remember { FocusRequester() }
+    val unitFocusRequester = remember { FocusRequester() }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -63,6 +73,15 @@ fun ProductFormBody(
             label = { Text(stringResource(R.string.name_label)) },
             isError = nameError != null,
             singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = {
+                    quantityFocusRequester.requestFocus()
+                }
+            ),
             supportingText = {
                 nameError?.let {
                     Text(
@@ -91,11 +110,21 @@ fun ProductFormBody(
             horizontalArrangement = Arrangement.spacedBy(Spacing.Small)
         ) {
             OutlinedTextField(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(quantityFocusRequester),
                 value = quantity,
                 onValueChange = onQuantityChange,
                 label = { Text(stringResource(R.string.quantity_label)) },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        unitFocusRequester.requestFocus()
+                    }
+                ),
                 isError = quantityError != null,
                 singleLine = true,
                 supportingText = {
@@ -109,10 +138,21 @@ fun ProductFormBody(
                 }
             )
             OutlinedTextField(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(unitFocusRequester),
                 value = unit,
                 onValueChange = onUnitChange,
                 label = { Text(stringResource(R.string.unit_label)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                ),
                 isError = unitError != null,
                 singleLine = true,
                 supportingText = {
