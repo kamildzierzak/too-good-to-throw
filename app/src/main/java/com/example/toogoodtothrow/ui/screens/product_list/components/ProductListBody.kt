@@ -3,7 +3,9 @@ package com.example.toogoodtothrow.ui.screens.product_list.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,7 +30,13 @@ fun ProductListBody(
     onProductLongClick: (Product) -> Unit,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
+    val listState = rememberLazyListState()
     val emptyLabel = stringResource(R.string.no_results_label)
+
+    // 🚀 Scroll to top when productList changes
+    LaunchedEffect(productList) {
+        listState.animateScrollToItem(0)
+    }
 
     Column(
         modifier = modifier,
@@ -59,7 +67,8 @@ fun ProductListBody(
                 productList = productList,
                 onProductClick = onProductClick,
                 onProductLongClick = onProductLongClick,
-                contentPadding = contentPadding
+                contentPadding = contentPadding,
+                listState = listState
             )
         }
     }

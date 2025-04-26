@@ -33,8 +33,8 @@ fun CategoryChip(
         },
         shape = MaterialTheme.shapes.small,
         colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+            selectedContainerColor = MaterialTheme.colorScheme.secondary,
+            selectedLabelColor = MaterialTheme.colorScheme.onSecondary
         )
     )
 }

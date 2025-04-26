@@ -25,7 +25,7 @@ object AppViewModelProvider {
         initializer {
             ProductFormViewModel(
                 productsRepository = application().container.productsRepository,
-                savedStateHandle = this.createSavedStateHandle()
+                savedStateHandle = createSavedStateHandle()
             )
         }
     }

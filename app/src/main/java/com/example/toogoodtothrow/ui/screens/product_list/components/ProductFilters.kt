@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -74,6 +75,13 @@ fun ProductFilters(
                 modifier = Modifier.semantics { contentDescription = onlyValidLabel },
                 checked = showOnlyValid,
                 onCheckedChange = onToggleValidOnly,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colorScheme.secondary,
+                    checkedTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                    uncheckedThumbColor = MaterialTheme.colorScheme.surfaceVariant,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                )
+
             )
         }
     }

@@ -1,5 +1,11 @@
 package com.example.toogoodtothrow.ui.screens.product_form
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +16,8 @@ import com.example.toogoodtothrow.data.repository.IProductsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import java.time.LocalDate
 
 class ProductFormViewModel(
@@ -54,8 +62,58 @@ class ProductFormViewModel(
         _uiState.value = _uiState.value.copy(unit = unit).validate()
     }
 
-    fun updateImageUri(uri: String?) {
-        _uiState.value = _uiState.value.copy(imageUri = uri)
+    fun saveImageToInternalStorage(context: Context, imageUri: Uri): String? {
+        return try {
+            // Read bitmap from URI
+            val bitmap = if (Build.VERSION.SDK_INT < 28) {
+                MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
+            } else {
+                val source = ImageDecoder.createSource(context.contentResolver, imageUri)
+                ImageDecoder.decodeBitmap(source)
+            }
+
+            // Create file in internal storage
+            val directory = File(context.filesDir, "images")
+            if (!directory.exists()) {
+                directory.mkdirs()
+            }
+
+            val fileName = "img_${System.currentTimeMillis()}.jpg"
+            val file = File(directory, fileName)
+
+            val outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outputStream)
+            outputStream.flush()
+            outputStream.close()
+
+            file.absolutePath  // Zwracamy ścieżkę
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun updateImagePath(context: Context, newUri: Uri?) {
+        viewModelScope.launch {
+            // If there is an existing image, delete it
+            val currentImagePath = _uiState.value.imagePath
+            if (currentImagePath != null) {
+                deleteImageFromInternalStorage(currentImagePath)
+            }
+
+            // Save new image to internal storage and update the UI state
+            val savedPath = newUri?.let { saveImageToInternalStorage(context, it) }
+            _uiState.value = _uiState.value.copy(imagePath = savedPath)
+        }
+    }
+
+    private fun deleteImageFromInternalStorage(imagePath: String?) {
+        imagePath?.let {
+            val file = File(it)
+            if (file.exists()) {
+                file.delete()
+            }
+        }
     }
 
     fun saveProduct(onFinished: () -> Unit) {
@@ -68,7 +126,7 @@ class ProductFormViewModel(
                 category = state.category,
                 quantity = state.quantity.toIntOrNull(),
                 unit = state.unit.ifBlank { null },
-                imageUri = state.imageUri,
+                imagePath = state.imagePath,
                 isDiscarded = state.isDiscarded
             )
 
@@ -105,7 +163,7 @@ private fun Product.toFormUiState() = ProductFormUiState(
     expirationDate = LocalDate.ofEpochDay(expirationDate),
     quantity = quantity?.toString() ?: "",
     unit = unit ?: "",
-    imageUri = imageUri,
+    imagePath = imagePath,
     isDiscarded = isDiscarded,
     isValid = true
 )

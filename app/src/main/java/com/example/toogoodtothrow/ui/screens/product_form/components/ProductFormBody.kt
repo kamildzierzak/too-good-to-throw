@@ -4,33 +4,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.toogoodtothrow.R
 import com.example.toogoodtothrow.data.local.ProductCategory
-import com.example.toogoodtothrow.data.local.toPolish
-import com.example.toogoodtothrow.ui.theme.DateFormats
 import com.example.toogoodtothrow.ui.theme.Spacing
 import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ProductFormBody(
@@ -44,7 +34,7 @@ fun ProductFormBody(
     onCategoryChange: (ProductCategory) -> Unit,
 
     expirationDate: LocalDate,
-    onDatePickClick: () -> Unit,
+    onDatePickClick: (LocalDate) -> Unit,
     dateError: Int?,
 
     quantity: String,
@@ -84,38 +74,16 @@ fun ProductFormBody(
             },
         )
 
-        Button(onClick = onDatePickClick) {
-            Text(text = stringResource(R.string.expiration_date_label))
-        }
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = expirationDate.format(DateTimeFormatter.ofPattern(DateFormats.DD_MM_YYYY)),
-            onValueChange = {},
-            label = { Text(stringResource(R.string.expiration_date_label)) },
-            isError = dateError != null,
-            singleLine = true,
-            supportingText = {
-                dateError?.let {
-                    Text(
-                        text = stringResource(it),
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
+        DatePickerField(
+            selectedDate = expirationDate,
+            onDateSelected = onDatePickClick,
+            errorMessage = dateError
         )
 
-        Text(stringResource(R.string.category_label))
-        ProductCategory.entries.forEach { cat ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(
-                    selected = category == cat,
-                    onClick = { onCategoryChange(cat) }
-                )
-                Text(text = cat.toPolish())
-            }
-        }
+        CategoryDropdownField(
+            selectedCategory = category,
+            onCategoryChange = onCategoryChange
+        )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -158,20 +126,9 @@ fun ProductFormBody(
             )
         }
 
-        Button(
-            onClick = onPickImageClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = stringResource(R.string.image_label))
-        }
-        AsyncImage(
-            model = imageUri,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            placeholder = painterResource(id = R.drawable.placeholder),
-            error = painterResource(id = R.drawable.placeholder)
+        ImagePickerField(
+            imageUri = imageUri,
+            onPickImageClick = onPickImageClick
         )
     }
 }

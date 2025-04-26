@@ -1,6 +1,5 @@
 package com.example.toogoodtothrow.ui.screens.product_form
 
-import android.app.DatePickerDialog
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,9 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,8 +21,6 @@ import com.example.toogoodtothrow.R
 import com.example.toogoodtothrow.ui.AppViewModelProvider
 import com.example.toogoodtothrow.ui.common.TopAppBar
 import com.example.toogoodtothrow.ui.screens.product_form.components.ProductFormBody
-import java.time.LocalDate
-import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,30 +31,14 @@ fun ProductFormScreen(
     onNavigateBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
     val context = LocalContext.current
+    
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
-        viewModel.updateImageUri(uri?.toString())
+        viewModel.updateImagePath(context, uri)
     }
 
-    var showDatePicker by remember { mutableStateOf(false) }
-
-    if (showDatePicker) {
-        val today = Calendar.getInstance()
-        DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                viewModel.updateExpirationDate(selectedDate)
-                showDatePicker = false
-            },
-            uiState.expirationDate.year,
-            uiState.expirationDate.monthValue - 1,
-            uiState.expirationDate.dayOfMonth
-        ).show()
-    }
 
     Scaffold(
         topBar = {
@@ -97,7 +75,7 @@ fun ProductFormScreen(
             onCategoryChange = viewModel::updateCategory,
 
             expirationDate = uiState.expirationDate,
-            onDatePickClick = { showDatePicker = true },
+            onDatePickClick = viewModel::updateExpirationDate,
             dateError = uiState.dateError,
 
             quantity = uiState.quantity,
@@ -108,7 +86,7 @@ fun ProductFormScreen(
             onUnitChange = viewModel::updateUnit,
             unitError = uiState.unitError,
 
-            imageUri = uiState.imageUri,
+            imageUri = uiState.imagePath,
             onPickImageClick = {
                 imagePickerLauncher.launch("image/*")
             }

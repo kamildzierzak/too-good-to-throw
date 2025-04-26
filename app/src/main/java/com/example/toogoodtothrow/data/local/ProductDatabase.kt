@@ -64,7 +64,7 @@ private val listOfExampleProducts = listOf(
         quantity = 1,
         unit = "kg",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 2,
@@ -72,9 +72,9 @@ private val listOfExampleProducts = listOf(
         expirationDate = LocalDate.now().plusDays(1).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 1,
-        unit = null,
+        unit = "pojemnik",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 3,
@@ -84,7 +84,7 @@ private val listOfExampleProducts = listOf(
         quantity = 10,
         unit = "szt",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 4,
@@ -94,7 +94,7 @@ private val listOfExampleProducts = listOf(
         quantity = 1,
         unit = "opakowanie",
         isDiscarded = true,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 5,
@@ -104,7 +104,7 @@ private val listOfExampleProducts = listOf(
         quantity = 1,
         unit = "tubka",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 6,
@@ -114,7 +114,7 @@ private val listOfExampleProducts = listOf(
         quantity = 1,
         unit = "kg",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 7,
@@ -124,7 +124,7 @@ private val listOfExampleProducts = listOf(
         quantity = 4,
         unit = "opakowania",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 8,
@@ -134,7 +134,7 @@ private val listOfExampleProducts = listOf(
         quantity = 1,
         unit = "l",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 9,
@@ -144,7 +144,7 @@ private val listOfExampleProducts = listOf(
         quantity = 6,
         unit = "szt",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 10,
@@ -154,7 +154,7 @@ private val listOfExampleProducts = listOf(
         quantity = 1,
         unit = "butelka",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 11,
@@ -164,7 +164,7 @@ private val listOfExampleProducts = listOf(
         quantity = 1,
         unit = "opakowanie",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 12,
@@ -174,6 +174,6 @@ private val listOfExampleProducts = listOf(
         quantity = 200,
         unit = "g",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     )
 )

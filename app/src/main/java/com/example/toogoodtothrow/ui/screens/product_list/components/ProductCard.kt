@@ -34,6 +34,7 @@ import com.example.toogoodtothrow.data.local.toPolish
 import com.example.toogoodtothrow.ui.common.previewProducts
 import com.example.toogoodtothrow.ui.theme.Spacing
 import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
+import java.io.File
 
 @Composable
 fun ProductCard(
@@ -59,7 +60,7 @@ fun ProductCard(
                     .aspectRatio(1f)
                     .weight(1f)
                     .clip(shape = MaterialTheme.shapes.medium),
-                model = product.imageUri,
+                model = product.imagePath?.let { File(it) } ?: R.drawable.placeholder,
                 contentDescription = product.name,
                 placeholder = painterResource(id = R.drawable.placeholder),
                 error = painterResource(id = R.drawable.placeholder),

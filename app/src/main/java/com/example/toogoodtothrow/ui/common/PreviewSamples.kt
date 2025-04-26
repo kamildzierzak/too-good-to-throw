@@ -13,7 +13,7 @@ val previewProducts = listOf(
         quantity = 1,
         unit = "kg",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 2,
@@ -21,9 +21,9 @@ val previewProducts = listOf(
         expirationDate = LocalDate.now().plusDays(1).toEpochDay(),
         category = ProductCategory.FOOD,
         quantity = 1,
-        unit = null,
+        unit = "pojemnik",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 3,
@@ -33,7 +33,7 @@ val previewProducts = listOf(
         quantity = 10,
         unit = "szt",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 4,
@@ -43,7 +43,7 @@ val previewProducts = listOf(
         quantity = 1,
         unit = "opakowanie",
         isDiscarded = true,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 5,
@@ -53,7 +53,7 @@ val previewProducts = listOf(
         quantity = 1,
         unit = "tubka",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 6,
@@ -63,7 +63,7 @@ val previewProducts = listOf(
         quantity = 1,
         unit = "kg",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     ),
     Product(
         id = 7,
@@ -73,6 +73,6 @@ val previewProducts = listOf(
         quantity = 4,
         unit = "opakowania",
         isDiscarded = false,
-        imageUri = null
+        imagePath = null
     )
 )

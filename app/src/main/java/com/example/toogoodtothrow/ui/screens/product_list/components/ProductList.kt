@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,11 +21,12 @@ import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductList(
+    modifier: Modifier = Modifier,
     productList: List<Product>,
     onProductClick: (Product) -> Unit,
     onProductLongClick: (Product) -> Unit,
     contentPadding: PaddingValues,
-    modifier: Modifier = Modifier
+    listState: LazyListState
 ) {
     val haptics = LocalHapticFeedback.current
 
@@ -32,7 +34,8 @@ fun ProductList(
         modifier = modifier
             .padding(all = Spacing.Small),
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(Spacing.Small)
+        verticalArrangement = Arrangement.spacedBy(Spacing.Small),
+        state = listState
     ) {
         items(items = productList, key = { it.id }) { item ->
             ProductCard(
@@ -58,7 +61,8 @@ private fun ProductListPreview() {
             productList = previewProducts,
             onProductClick = {},
             onProductLongClick = {},
-            contentPadding = PaddingValues(Spacing.Small)
+            contentPadding = PaddingValues(Spacing.Small),
+            listState = LazyListState()
         )
     }
 }

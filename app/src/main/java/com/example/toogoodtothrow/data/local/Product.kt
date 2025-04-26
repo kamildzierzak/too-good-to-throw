@@ -12,5 +12,5 @@ data class Product(
     val quantity: Int? = null,
     val unit: String? = null,
     val isDiscarded: Boolean = false,
-    val imageUri: String? = null,
+    val imagePath: String? = null,
 )

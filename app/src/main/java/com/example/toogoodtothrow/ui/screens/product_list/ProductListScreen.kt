@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,10 +33,13 @@ import com.example.toogoodtothrow.R
 import com.example.toogoodtothrow.data.local.Product
 import com.example.toogoodtothrow.data.local.isExpired
 import com.example.toogoodtothrow.ui.AppViewModelProvider
+import com.example.toogoodtothrow.ui.common.TopAppBar
 import com.example.toogoodtothrow.ui.screens.product_list.components.ConfirmDiscardOrDeleteDialog
 import com.example.toogoodtothrow.ui.screens.product_list.components.ProductListBody
+import com.example.toogoodtothrow.ui.theme.Spacing
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductListScreen(
     viewModel: ProductListViewModel = viewModel<ProductListViewModel>(factory = AppViewModelProvider.Factory),
@@ -51,6 +55,12 @@ fun ProductListScreen(
     val snackbarText = stringResource(R.string.cannot_edit_expired)
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = stringResource(R.string.app_name),
+                canNavigateBack = false
+            )
+        },
         snackbarHost = {
             SnackbarHost(
                 modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
@@ -61,6 +71,8 @@ fun ProductListScreen(
             FloatingActionButton(
                 onClick = navigateToProductDetail,
                 shape = MaterialTheme.shapes.medium,
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier
                     .padding(
                         end = WindowInsets
@@ -99,8 +111,7 @@ fun ProductListScreen(
             },
             onProductLongClick = {
                 productToModify = it
-            },
-            contentPadding = innerPadding
+            }
         )
 
         productToModify?.let { product ->

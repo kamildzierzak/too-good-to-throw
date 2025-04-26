@@ -10,7 +10,7 @@ data class ProductFormUiState(
     val category: ProductCategory = ProductCategory.FOOD,
     val quantity: String = "",
     val unit: String = "",
-    val imageUri: String? = null,
+    val imagePath: String? = null,
     val isDiscarded: Boolean = false,
     val isValid: Boolean = false,
 
