@@ -1,15 +1,59 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# Gradle files
+.gradle/
+build/
+**/build/
+
+# Local configuration file (sdk path, etc)
 local.properties
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Keystore files
+*.jks
+*.keystore
+
+# Generated files
+/captures/
+/.externalNativeBuild/
+
+# Proguard
+proguard/
+
+# Miscellaneous
+.DS_Store
+*.log
+*.orig
+*.rej
+*.swp
+
+# NDK
+obj/
+*.so
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Flutter (if mixed)
+/.flutter-plugins
+.packages
+.flutter-plugins-dependencies
+
+# Jetifier caches
+.jetifier/
+
+# Kotlin/Native
+*.klib
+
+# Crashlytics (Fabric)
+/fabric.properties
+
+# Firebase
+google-services.json
