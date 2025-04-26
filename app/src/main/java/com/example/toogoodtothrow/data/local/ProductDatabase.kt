@@ -64,7 +64,8 @@ abstract class ProductDatabase : RoomDatabase() {
                 val youghurtPath = copyDrawableToFile(context, R.drawable.yogurt, "yogurt.jpg")
                 val milkPath = copyDrawableToFile(context, R.drawable.milk, "milk.jpg")
                 val bananaPath = copyDrawableToFile(context, R.drawable.banana, "banana.jpg")
-                val herbShampooPath = copyDrawableToFile(context, R.drawable.herbshampoo, "herbshampoo.jpg")
+                val herbShampooPath =
+                    copyDrawableToFile(context, R.drawable.herbshampoo, "herbshampoo.jpg")
                 val ibuprofenPath =
                     copyDrawableToFile(context, R.drawable.ibuprofen, "ibuprofen.jpg")
                 val butterPath = copyDrawableToFile(context, R.drawable.butter, "butter.jpg")

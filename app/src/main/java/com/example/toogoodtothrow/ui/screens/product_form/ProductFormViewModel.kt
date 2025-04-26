@@ -13,17 +13,14 @@ import com.example.toogoodtothrow.R
 import com.example.toogoodtothrow.data.local.Product
 import com.example.toogoodtothrow.data.local.ProductCategory
 import com.example.toogoodtothrow.data.repository.IProductsRepository
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDate
 
-@OptIn(FlowPreview::class)
 class ProductFormViewModel(
     private val productsRepository: IProductsRepository, savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -48,21 +45,21 @@ class ProductFormViewModel(
             initialFormState = ProductFormUiState()
         }
 
-        viewModelScope.launch {
-            uiState.debounce(500).collect { state ->
-                if (initialFormState != null && state != initialFormState) {
-                    _uiState.update { validate(it) }
-                }
-            }
-        }
+//        viewModelScope.launch {
+//            uiState.debounce(500).collect { state ->
+//                if (initialFormState != null && state != initialFormState) {
+//                    _uiState.update { validate(it) }
+//                }
+//            }
+//        }
     }
 
     fun updateName(name: String) {
-        _uiState.value = _uiState.value.copy(name = name)
+        _uiState.value = _uiState.value.copy(name = name).let { validate(it) }
     }
 
     fun updateExpirationDate(date: LocalDate) {
-        _uiState.value = _uiState.value.copy(expirationDate = date)
+        _uiState.value = _uiState.value.copy(expirationDate = date).let { validate(it) }
     }
 
     fun updateCategory(category: ProductCategory) {
@@ -70,11 +67,11 @@ class ProductFormViewModel(
     }
 
     fun updateQuantity(quantity: String) {
-        _uiState.value = _uiState.value.copy(quantity = quantity)
+        _uiState.value = _uiState.value.copy(quantity = quantity).let { validate(it) }
     }
 
     fun updateUnit(unit: String) {
-        _uiState.value = _uiState.value.copy(unit = unit)
+        _uiState.value = _uiState.value.copy(unit = unit).let { validate(it) }
     }
 
     fun updateImagePath(context: Context, newUri: Uri?) {
@@ -92,30 +89,39 @@ class ProductFormViewModel(
     }
 
     fun saveProduct(onFinished: () -> Unit) {
+
+        if (_uiState.value.isSaving) return
+
         viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isSaving = true)
+
             val validatedState = validate(_uiState.value)
             _uiState.value = validatedState
 
-            if (validatedState.isValid) {
-                val product = Product(
-                    id = validatedState.id ?: 0,
-                    name = validatedState.name.trim(),
-                    expirationDate = validatedState.expirationDate.toEpochDay(),
-                    category = validatedState.category,
-                    quantity = validatedState.quantity.toIntOrNull(),
-                    unit = validatedState.unit.ifBlank { null },
-                    imagePath = validatedState.imagePath,
-                    isDiscarded = validatedState.isDiscarded
-                )
-
-                if (validatedState.id != null) {
-                    productsRepository.updateProduct(product)
-                } else {
-                    productsRepository.insertProduct(product)
-                }
-
-                onFinished()
+            if (!validatedState.isValid) {
+                _uiState.update { it.copy(isSaving = false) }
+                return@launch
             }
+
+            val product = Product(
+                id = validatedState.id ?: 0,
+                name = validatedState.name.trim(),
+                expirationDate = validatedState.expirationDate.toEpochDay(),
+                category = validatedState.category,
+                quantity = validatedState.quantity.toIntOrNull(),
+                unit = validatedState.unit.ifBlank { null },
+                imagePath = validatedState.imagePath,
+                isDiscarded = validatedState.isDiscarded
+            )
+
+            if (validatedState.id != null) {
+                productsRepository.updateProduct(product)
+            } else {
+                productsRepository.insertProduct(product)
+            }
+
+            onFinished()
+
         }
     }
 
@@ -138,7 +144,7 @@ class ProductFormViewModel(
         return try {
             // Read bitmap from URI
             val bitmap = if (Build.VERSION.SDK_INT < 28) {
-                // For API level 28 and below, use deprecated method :(
+                // For API level 28 and below, we need to use deprecated method :(
                 // 'getBitmap(ContentResolver!, Uri!): Bitmap!' is deprecated. Deprecated in Java
                 MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
             } else {

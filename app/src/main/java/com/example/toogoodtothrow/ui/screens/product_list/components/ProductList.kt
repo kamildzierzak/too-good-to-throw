@@ -18,7 +18,6 @@ import com.example.toogoodtothrow.ui.common.previewProducts
 import com.example.toogoodtothrow.ui.theme.Spacing
 import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductList(
     modifier: Modifier = Modifier,

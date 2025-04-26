@@ -53,6 +53,8 @@ fun ProductFormBody(
 
     imageUri: String?,
     onPickImageClick: () -> Unit,
+
+    onImeDone: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val quantityFocusRequester = remember { FocusRequester() }
@@ -151,6 +153,7 @@ fun ProductFormBody(
                 keyboardActions = KeyboardActions(
                     onDone = {
                         focusManager.clearFocus()
+                        onImeDone()
                     }
                 ),
                 isError = unitError != null,
@@ -194,7 +197,8 @@ fun ProductFormBodyPreview() {
             onUnitChange = {},
             unitError = null,
             imageUri = null,
-            onPickImageClick = {}
+            onPickImageClick = {},
+            onImeDone = {}
         )
     }
 }

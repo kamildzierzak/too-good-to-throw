@@ -89,7 +89,9 @@ fun ProductFormScreen(
             imageUri = uiState.imagePath,
             onPickImageClick = {
                 imagePickerLauncher.launch("image/*")
-            }
+            },
+
+            onImeDone = { viewModel.saveProduct(onSaveFinished) }
         )
     }
 }

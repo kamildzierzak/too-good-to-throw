@@ -24,7 +24,6 @@ import com.example.toogoodtothrow.data.local.toPolish
 import com.example.toogoodtothrow.ui.theme.Spacing
 import com.example.toogoodtothrow.ui.theme.TooGoodToThrowTheme
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProductFilters(
     modifier: Modifier = Modifier,

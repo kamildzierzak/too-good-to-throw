@@ -19,4 +19,6 @@ data class ProductFormUiState(
     val dateError: Int? = null,
     val quantityError: Int? = null,
     val unitError: Int? = null,
+
+    val isSaving: Boolean = false,
 )
