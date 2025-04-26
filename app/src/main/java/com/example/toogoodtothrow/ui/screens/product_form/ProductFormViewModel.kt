@@ -138,6 +138,8 @@ class ProductFormViewModel(
         return try {
             // Read bitmap from URI
             val bitmap = if (Build.VERSION.SDK_INT < 28) {
+                // For API level 28 and below, use deprecated method :(
+                // 'getBitmap(ContentResolver!, Uri!): Bitmap!' is deprecated. Deprecated in Java
                 MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
             } else {
                 val source = ImageDecoder.createSource(context.contentResolver, imageUri)

@@ -36,7 +36,6 @@ import com.example.toogoodtothrow.ui.AppViewModelProvider
 import com.example.toogoodtothrow.ui.common.TopAppBar
 import com.example.toogoodtothrow.ui.screens.product_list.components.ConfirmDiscardOrDeleteDialog
 import com.example.toogoodtothrow.ui.screens.product_list.components.ProductListBody
-import com.example.toogoodtothrow.ui.theme.Spacing
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

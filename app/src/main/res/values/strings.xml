@@ -15,8 +15,6 @@
     <string name="status_discarded">Wyrzucony</string>
 
     <!-- Main -->
-    <string name="product_image">Zdjęcie produktu %1$s</string>
-    <string name="hint_long_press_delete">Przytrzymaj, aby usunąć lub oznaczyć wyrzucenie</string>
     <string name="products_count_label">%1$d produktów</string>
     <string name="no_results_label">Brak wyników</string>
     <string name="only_valid_products_label">Pokaż ważne produkty:</string>
@@ -26,7 +24,6 @@
     <string name="confirm_dialog_title">Czy na pewno?</string>
     <string name="confirm_discard_text">Produkt jest przeterminowany. Oznaczyć jako wyrzucony?</string>
     <string name="confirm_delete_text">Czy na pewno usunąć?</string>
-    <string name="select_date">Wybierz date</string>
 
     <!-- Form fields labels -->
     <string name="name_label">Nazwa</string>
