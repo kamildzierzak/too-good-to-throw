@@ -13,13 +13,17 @@ import com.example.toogoodtothrow.R
 import com.example.toogoodtothrow.data.local.Product
 import com.example.toogoodtothrow.data.local.ProductCategory
 import com.example.toogoodtothrow.data.repository.IProductsRepository
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDate
 
+@OptIn(FlowPreview::class)
 class ProductFormViewModel(
     private val productsRepository: IProductsRepository,
     savedStateHandle: SavedStateHandle
@@ -40,14 +44,22 @@ class ProductFormViewModel(
                 }
             }
         }
+
+        viewModelScope.launch {
+            uiState
+                .debounce(500)
+                .collect {
+                    _uiState.update { validate(it) }
+                }
+        }
     }
 
     fun updateName(name: String) {
-        _uiState.value = _uiState.value.copy(name = name).validate()
+        _uiState.value = _uiState.value.copy(name = name)
     }
 
     fun updateExpirationDate(date: LocalDate) {
-        _uiState.value = _uiState.value.copy(expirationDate = date).validate()
+        _uiState.value = _uiState.value.copy(expirationDate = date)
     }
 
     fun updateCategory(category: ProductCategory) {
@@ -55,14 +67,29 @@ class ProductFormViewModel(
     }
 
     fun updateQuantity(quantity: String) {
-        _uiState.value = _uiState.value.copy(quantity = quantity).validate()
+        _uiState.value = _uiState.value.copy(quantity = quantity)
     }
 
     fun updateUnit(unit: String) {
-        _uiState.value = _uiState.value.copy(unit = unit).validate()
+        _uiState.value = _uiState.value.copy(unit = unit)
     }
 
-    fun saveImageToInternalStorage(context: Context, imageUri: Uri): String? {
+    private fun validate(state: ProductFormUiState): ProductFormUiState {
+        val nameOk = state.name.isNotBlank()
+        val dateOk = !state.expirationDate.isBefore(LocalDate.now())
+        val quantityOk = state.quantity.isEmpty() || state.quantity.toIntOrNull() != null
+        val unitOk = state.quantity.isEmpty() || state.unit.isNotBlank()
+
+        return state.copy(
+            isValid = nameOk && dateOk && quantityOk && unitOk,
+            nameError = if (!nameOk) R.string.error_name_required else null,
+            dateError = if (!dateOk) R.string.error_date_invalid else null,
+            quantityError = if (!quantityOk) R.string.error_quantity_invalid else null,
+            unitError = if (!unitOk) R.string.error_unit_required else null
+        )
+    }
+
+    private fun saveImageToInternalStorage(context: Context, imageUri: Uri): String? {
         return try {
             // Read bitmap from URI
             val bitmap = if (Build.VERSION.SDK_INT < 28) {
@@ -118,42 +145,47 @@ class ProductFormViewModel(
 
     fun saveProduct(onFinished: () -> Unit) {
         viewModelScope.launch {
-            val state = _uiState.value
-            val product = Product(
-                id = state.id ?: 0,
-                name = state.name.trim(),
-                expirationDate = state.expirationDate.toEpochDay(),
-                category = state.category,
-                quantity = state.quantity.toIntOrNull(),
-                unit = state.unit.ifBlank { null },
-                imagePath = state.imagePath,
-                isDiscarded = state.isDiscarded
-            )
+            val validatedState = validate(_uiState.value)
 
-            if (state.id != null) {
-                productsRepository.updateProduct(product)
+            if (validatedState.isValid) {
+                val product = Product(
+                    id = validatedState.id ?: 0,
+                    name = validatedState.name.trim(),
+                    expirationDate = validatedState.expirationDate.toEpochDay(),
+                    category = validatedState.category,
+                    quantity = validatedState.quantity.toIntOrNull(),
+                    unit = validatedState.unit.ifBlank { null },
+                    imagePath = validatedState.imagePath,
+                    isDiscarded = validatedState.isDiscarded
+                )
+
+                if (validatedState.id != null) {
+                    productsRepository.updateProduct(product)
+                } else {
+                    productsRepository.insertProduct(product)
+                }
+
+                onFinished()
             } else {
-                productsRepository.insertProduct(product)
+                _uiState.value = validatedState
             }
-
-            onFinished()
         }
     }
 
-    private fun ProductFormUiState.validate(): ProductFormUiState {
-        val nameOk = name.isNotBlank()
-        val dateOk = !expirationDate.isBefore(LocalDate.now())
-        val quantityOk = quantity.isEmpty() || quantity.toIntOrNull() != null
-        val unitOk = quantity.isEmpty() || unit.isNotBlank()
-
-        return copy(
-            isValid = nameOk && dateOk && quantityOk && unitOk,
-            nameError = if (!nameOk) R.string.error_name_required else null,
-            dateError = if (!dateOk) R.string.error_date_invalid else null,
-            quantityError = if (!quantityOk) R.string.error_quantity_invalid else null,
-            unitError = if (!unitOk) R.string.error_unit_required else null
-        )
-    }
+//    private fun ProductFormUiState.validate(): ProductFormUiState {
+//        val nameOk = name.isNotBlank()
+//        val dateOk = !expirationDate.isBefore(LocalDate.now())
+//        val quantityOk = quantity.isEmpty() || quantity.toIntOrNull() != null
+//        val unitOk = quantity.isEmpty() || unit.isNotBlank()
+//
+//        return copy(
+//            isValid = nameOk && dateOk && quantityOk && unitOk,
+//            nameError = if (!nameOk) R.string.error_name_required else null,
+//            dateError = if (!dateOk) R.string.error_date_invalid else null,
+//            quantityError = if (!quantityOk) R.string.error_quantity_invalid else null,
+//            unitError = if (!unitOk) R.string.error_unit_required else null
+//        )
+//    }
 }
 
 private fun Product.toFormUiState() = ProductFormUiState(

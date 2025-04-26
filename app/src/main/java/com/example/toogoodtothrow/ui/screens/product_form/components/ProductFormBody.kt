@@ -72,7 +72,8 @@ fun ProductFormBody(
                     )
                 }
             },
-        )
+
+            )
 
         DatePickerField(
             selectedDate = expirationDate,
