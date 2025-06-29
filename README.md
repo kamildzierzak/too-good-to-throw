@@ -30,11 +30,13 @@ Helps you reduce waste by reminding you of upcoming expirations for food, medici
     - In-place updates via Room (no delete+reinsert)
     - Real-time validation with inline error messages
 
-- **Architecture & Tech**
-    - Jetpack Compose & Material3
-    - MVVM: ViewModel + StateFlow + Coroutines
-    - Local storage with Room (preloaded sample data on first launch)
-    - Simple dependency injection via `AppContainer`
+---
+
+## 🏗️ Architecture & Tech
+- Jetpack Compose & Material3
+- MVVM: ViewModel + StateFlow + Coroutines
+- Local storage with Room (preloaded sample data on first launch)
+- Simple dependency injection via `AppContainer`
 
 ---
 
@@ -42,6 +44,8 @@ Helps you reduce waste by reminding you of upcoming expirations for food, medici
 
 - Android Studio Electric Eel (2023.1) or newer
 - JDK 11+
+
+---
 
 ## 🚀 Getting Started
 
@@ -51,10 +55,14 @@ Helps you reduce waste by reminding you of upcoming expirations for food, medici
 4. Connect a physical device or start an Android emulator (API ≥ 26).
 5. Click Run (the ▶️ button) to install and launch the app.
 
+---
+
 ## 📝 Notes
 
 - Sample products are auto-inserted on first launch via Room’s callback.
 - Gradle wrapper (gradlew) ensures consistent builds; you can also run ./gradlew clean build from
   the terminal.
+
+---
 
 © 2025 Built for PJATK Mobile Programming Course
